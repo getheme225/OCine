@@ -1,0 +1,694 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OcineDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="ID_Actor" />
+          </Key>
+          <Property Name="ID_Actor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="25" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OcineDb.dbo.ActorsFilms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ActorsFilms">
+          <Key>
+            <PropertyRef Name="ID_Films" />
+            <PropertyRef Name="ID_Actor" />
+          </Key>
+          <Property Name="ID_Films" Type="int" Nullable="false" />
+          <Property Name="ID_Actor" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cinema">
+          <Key>
+            <PropertyRef Name="ID_Cinema" />
+          </Key>
+          <Property Name="ID_Cinema" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CinemaName" Type="nchar" MaxLength="20" />
+          <Property Name="Telephone" Type="nchar" MaxLength="12" />
+          <Property Name="Address" Type="geography" />
+          <Property Name="WebSite" Type="nvarchar" MaxLength="50" />
+          <Property Name="Raiting" Type="float" />
+          <Property Name="Image" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="ID_Country" />
+          </Key>
+          <Property Name="ID_Country" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Country" Type="nchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Films">
+          <Key>
+            <PropertyRef Name="ID_film" />
+          </Key>
+          <Property Name="ID_film" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nchar" MaxLength="50" />
+          <Property Name="AgePG" Type="int" />
+          <Property Name="DirectorProduction" Type="nchar" MaxLength="50" />
+          <Property Name="Duration" Type="time" Precision="0" />
+          <Property Name="TraillerUrl" Type="nchar" MaxLength="50" />
+          <Property Name="Affiche" Type="varbinary(max)" />
+          <Property Name="Rating" Type="float" />
+          <Property Name="About" Type="varchar(max)" />
+          <Property Name="HasInScreening" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OcineDb.dbo.FilmsCountries' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FilmsCountries">
+          <Key>
+            <PropertyRef Name="ID_Country" />
+            <PropertyRef Name="ID_film" />
+          </Key>
+          <Property Name="ID_Country" Type="int" Nullable="false" />
+          <Property Name="ID_film" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Genres">
+          <Key>
+            <PropertyRef Name="ID_Genre" />
+          </Key>
+          <Property Name="ID_Genre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Genre" Type="nchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OcineDb.dbo.GENRES_FILMS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="GENRES_FILMS">
+          <Key>
+            <PropertyRef Name="ID_film" />
+            <PropertyRef Name="ID_Genre" />
+          </Key>
+          <Property Name="ID_film" Type="int" Nullable="false" />
+          <Property Name="ID_Genre" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Premiere">
+          <Key>
+            <PropertyRef Name="ID_Premiere" />
+          </Key>
+          <Property Name="ID_Premiere" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PremiereDate" Type="date" />
+          <Property Name="CountryPremieres" Type="nchar" MaxLength="25" />
+          <Property Name="ID_film" Type="int" />
+        </EntityType>
+        <EntityType Name="Seances">
+          <Key>
+            <PropertyRef Name="ID_Seances" />
+          </Key>
+          <Property Name="ID_Seances" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayingDate" Type="date" />
+          <Property Name="PlayingTime" Type="time" Precision="0" />
+          <Property Name="ID_Cinema" Type="int" />
+          <Property Name="UrlSeances" Type="nchar" MaxLength="25" />
+          <Property Name="ID_Film" Type="int" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID_client" />
+          </Key>
+          <Property Name="ID_client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Firstname" Type="nchar" MaxLength="25" />
+          <Property Name="Surname" Type="nchar" MaxLength="25" />
+          <Property Name="Lastname" Type="nchar" MaxLength="25" />
+          <Property Name="Username" Type="nchar" MaxLength="25" />
+          <Property Name="Password" Type="varbinary" MaxLength="32" />
+          <Property Name="BirthDay" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="UserFavorisFilms">
+          <Key>
+            <PropertyRef Name="ID_client" />
+            <PropertyRef Name="ID_film" />
+          </Key>
+          <Property Name="ID_client" Type="int" Nullable="false" />
+          <Property Name="ID_film" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="Actors_Film">
+          <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+          <End Role="ActorsFilms" Type="Self.ActorsFilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Actor">
+              <PropertyRef Name="ID_Actor" />
+            </Principal>
+            <Dependent Role="ActorsFilms">
+              <PropertyRef Name="ID_Actor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Country_Films">
+          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="FilmsCountries" Type="Self.FilmsCountries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="ID_Country" />
+            </Principal>
+            <Dependent Role="FilmsCountries">
+              <PropertyRef Name="ID_Country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FavorisFilm">
+          <End Role="Films" Type="Self.Films" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserFavorisFilms" Type="Self.UserFavorisFilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="UserFavorisFilms">
+              <PropertyRef Name="ID_film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Film_Country">
+          <End Role="Films" Type="Self.Films" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FilmsCountries" Type="Self.FilmsCountries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="FilmsCountries">
+              <PropertyRef Name="ID_film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="filmsGenres">
+          <End Role="Genres" Type="Self.Genres" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GENRES_FILMS" Type="Self.GENRES_FILMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genres">
+              <PropertyRef Name="ID_Genre" />
+            </Principal>
+            <Dependent Role="GENRES_FILMS">
+              <PropertyRef Name="ID_Genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActorsFilms_Films">
+          <End Role="Films" Type="Self.Films" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ActorsFilms" Type="Self.ActorsFilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="ActorsFilms">
+              <PropertyRef Name="ID_Films" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GenresFilms">
+          <End Role="Films" Type="Self.Films" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GENRES_FILMS" Type="Self.GENRES_FILMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="GENRES_FILMS">
+              <PropertyRef Name="ID_film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InScreening">
+          <End Role="Films" Type="Self.Films" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="Seances">
+              <PropertyRef Name="ID_Film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OwnerOfFavoris">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserFavorisFilms" Type="Self.UserFavorisFilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID_client" />
+            </Principal>
+            <Dependent Role="UserFavorisFilms">
+              <PropertyRef Name="ID_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Premiere_Film">
+          <End Role="Films" Type="Self.Films" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Premiere" Type="Self.Premiere" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="Premiere">
+              <PropertyRef Name="ID_film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SeanceInCimena">
+          <End Role="Cinema" Type="Self.Cinema" Multiplicity="0..1" />
+          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cinema">
+              <PropertyRef Name="ID_Cinema" />
+            </Principal>
+            <Dependent Role="Seances">
+              <PropertyRef Name="ID_Cinema" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OcineDbModelStoreContainer">
+          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cinema" EntityType="Self.Cinema" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Films" EntityType="Self.Films" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genres" EntityType="Self.Genres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Premiere" EntityType="Self.Premiere" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seances" EntityType="Self.Seances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorsFilms" EntityType="Self.ActorsFilms" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ActorsFilms].[ID_Films] AS [ID_Films], 
+    [ActorsFilms].[ID_Actor] AS [ID_Actor]
+    FROM [dbo].[ActorsFilms] AS [ActorsFilms]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="FilmsCountries" EntityType="Self.FilmsCountries" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FilmsCountries].[ID_Country] AS [ID_Country], 
+    [FilmsCountries].[ID_film] AS [ID_film]
+    FROM [dbo].[FilmsCountries] AS [FilmsCountries]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="GENRES_FILMS" EntityType="Self.GENRES_FILMS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [GENRES_FILMS].[ID_film] AS [ID_film], 
+    [GENRES_FILMS].[ID_Genre] AS [ID_Genre]
+    FROM [dbo].[GENRES_FILMS] AS [GENRES_FILMS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserFavorisFilms" EntityType="Self.UserFavorisFilms" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserFavorisFilms].[ID_client] AS [ID_client], 
+    [UserFavorisFilms].[ID_film] AS [ID_film]
+    FROM [dbo].[UserFavorisFilms] AS [UserFavorisFilms]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="Actors_Film" Association="Self.Actors_Film">
+            <End Role="Actor" EntitySet="Actor" />
+            <End Role="ActorsFilms" EntitySet="ActorsFilms" />
+          </AssociationSet>
+          <AssociationSet Name="Country_Films" Association="Self.Country_Films">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="FilmsCountries" EntitySet="FilmsCountries" />
+          </AssociationSet>
+          <AssociationSet Name="FavorisFilm" Association="Self.FavorisFilm">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="UserFavorisFilms" EntitySet="UserFavorisFilms" />
+          </AssociationSet>
+          <AssociationSet Name="Film_Country" Association="Self.Film_Country">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="FilmsCountries" EntitySet="FilmsCountries" />
+          </AssociationSet>
+          <AssociationSet Name="filmsGenres" Association="Self.filmsGenres">
+            <End Role="Genres" EntitySet="Genres" />
+            <End Role="GENRES_FILMS" EntitySet="GENRES_FILMS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActorsFilms_Films" Association="Self.FK_ActorsFilms_Films">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="ActorsFilms" EntitySet="ActorsFilms" />
+          </AssociationSet>
+          <AssociationSet Name="GenresFilms" Association="Self.GenresFilms">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="GENRES_FILMS" EntitySet="GENRES_FILMS" />
+          </AssociationSet>
+          <AssociationSet Name="InScreening" Association="Self.InScreening">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="Seances" EntitySet="Seances" />
+          </AssociationSet>
+          <AssociationSet Name="OwnerOfFavoris" Association="Self.OwnerOfFavoris">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserFavorisFilms" EntitySet="UserFavorisFilms" />
+          </AssociationSet>
+          <AssociationSet Name="Premiere_Film" Association="Self.Premiere_Film">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="Premiere" EntitySet="Premiere" />
+          </AssociationSet>
+          <AssociationSet Name="SeanceInCimena" Association="Self.SeanceInCimena">
+            <End Role="Cinema" EntitySet="Cinema" />
+            <End Role="Seances" EntitySet="Seances" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OcineDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="ID_Actor" />
+          </Key>
+          <Property Name="ID_Actor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Films" Relationship="Self.ActorsFilms" FromRole="Actor" ToRole="Films" />
+        </EntityType>
+        <EntityType Name="Cinema">
+          <Key>
+            <PropertyRef Name="ID_Cinema" />
+          </Key>
+          <Property Name="ID_Cinema" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CinemaName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Telephone" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
+          <Property Name="Address" Type="Geography" />
+          <Property Name="WebSite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Raiting" Type="Double" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Seances" Relationship="Self.SeanceInCimena" FromRole="Cinema" ToRole="Seances" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="ID_Country" />
+          </Key>
+          <Property Name="ID_Country" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Country1" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Films" Relationship="Self.FilmsCountries" FromRole="Country" ToRole="Films" />
+        </EntityType>
+        <EntityType Name="Films">
+          <Key>
+            <PropertyRef Name="ID_film" />
+          </Key>
+          <Property Name="ID_film" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="AgePG" Type="Int32" />
+          <Property Name="DirectorProduction" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Duration" Type="Time" Precision="0" />
+          <Property Name="TraillerUrl" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Affiche" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Rating" Type="Double" />
+          <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="HasInScreening" Type="Boolean" />
+          <NavigationProperty Name="Seances" Relationship="Self.InScreening" FromRole="Films" ToRole="Seances" />
+          <NavigationProperty Name="Premiere" Relationship="Self.Premiere_Film" FromRole="Films" ToRole="Premiere" />
+          <NavigationProperty Name="Actor" Relationship="Self.ActorsFilms" FromRole="Films" ToRole="Actor" />
+          <NavigationProperty Name="Country" Relationship="Self.FilmsCountries" FromRole="Films" ToRole="Country" />
+          <NavigationProperty Name="Genres" Relationship="Self.GENRES_FILMS" FromRole="Films" ToRole="Genres" />
+          <NavigationProperty Name="User" Relationship="Self.UserFavorisFilms" FromRole="Films" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Genres">
+          <Key>
+            <PropertyRef Name="ID_Genre" />
+          </Key>
+          <Property Name="ID_Genre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Genre" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Films" Relationship="Self.GENRES_FILMS" FromRole="Genres" ToRole="Films" />
+        </EntityType>
+        <EntityType Name="Premiere">
+          <Key>
+            <PropertyRef Name="ID_Premiere" />
+          </Key>
+          <Property Name="ID_Premiere" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PremiereDate" Type="DateTime" Precision="0" />
+          <Property Name="CountryPremieres" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="ID_film" Type="Int32" />
+          <NavigationProperty Name="Films" Relationship="Self.Premiere_Film" FromRole="Premiere" ToRole="Films" />
+        </EntityType>
+        <EntityType Name="Seances">
+          <Key>
+            <PropertyRef Name="ID_Seances" />
+          </Key>
+          <Property Name="ID_Seances" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayingDate" Type="DateTime" Precision="0" />
+          <Property Name="PlayingTime" Type="Time" Precision="0" />
+          <Property Name="ID_Cinema" Type="Int32" />
+          <Property Name="UrlSeances" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="ID_Film" Type="Int32" />
+          <NavigationProperty Name="Cinema" Relationship="Self.SeanceInCimena" FromRole="Seances" ToRole="Cinema" />
+          <NavigationProperty Name="Films" Relationship="Self.InScreening" FromRole="Seances" ToRole="Films" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID_client" />
+          </Key>
+          <Property Name="ID_client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="Surname" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="Lastname" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="Password" Type="Binary" MaxLength="32" FixedLength="false" />
+          <Property Name="BirthDay" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Films" Relationship="Self.UserFavorisFilms" FromRole="User" ToRole="Films" />
+        </EntityType>
+        <Association Name="SeanceInCimena">
+          <End Role="Cinema" Type="Self.Cinema" Multiplicity="0..1" />
+          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cinema">
+              <PropertyRef Name="ID_Cinema" />
+            </Principal>
+            <Dependent Role="Seances">
+              <PropertyRef Name="ID_Cinema" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InScreening">
+          <End Role="Films" Type="Self.Films" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="Seances">
+              <PropertyRef Name="ID_Film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Premiere_Film">
+          <End Role="Films" Type="Self.Films" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Premiere" Type="Self.Premiere" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="Premiere">
+              <PropertyRef Name="ID_film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ActorsFilms">
+          <End Role="Actor" Type="Self.Actor" Multiplicity="*" />
+          <End Role="Films" Type="Self.Films" Multiplicity="*" />
+        </Association>
+        <Association Name="FilmsCountries">
+          <End Role="Country" Type="Self.Country" Multiplicity="*" />
+          <End Role="Films" Type="Self.Films" Multiplicity="*" />
+        </Association>
+        <Association Name="GENRES_FILMS">
+          <End Role="Genres" Type="Self.Genres" Multiplicity="*" />
+          <End Role="Films" Type="Self.Films" Multiplicity="*" />
+        </Association>
+        <Association Name="UserFavorisFilms">
+          <End Role="Films" Type="Self.Films" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="OcineDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Actor" EntityType="Self.Actor" />
+          <EntitySet Name="Cinema" EntityType="Self.Cinema" />
+          <EntitySet Name="Country" EntityType="Self.Country" />
+          <EntitySet Name="Films" EntityType="Self.Films" />
+          <EntitySet Name="Genres" EntityType="Self.Genres" />
+          <EntitySet Name="Premiere" EntityType="Self.Premiere" />
+          <EntitySet Name="Seances" EntityType="Self.Seances" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="SeanceInCimena" Association="Self.SeanceInCimena">
+            <End Role="Cinema" EntitySet="Cinema" />
+            <End Role="Seances" EntitySet="Seances" />
+          </AssociationSet>
+          <AssociationSet Name="InScreening" Association="Self.InScreening">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="Seances" EntitySet="Seances" />
+          </AssociationSet>
+          <AssociationSet Name="Premiere_Film" Association="Self.Premiere_Film">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="Premiere" EntitySet="Premiere" />
+          </AssociationSet>
+          <AssociationSet Name="ActorsFilms" Association="Self.ActorsFilms">
+            <End Role="Actor" EntitySet="Actor" />
+            <End Role="Films" EntitySet="Films" />
+          </AssociationSet>
+          <AssociationSet Name="FilmsCountries" Association="Self.FilmsCountries">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="Films" EntitySet="Films" />
+          </AssociationSet>
+          <AssociationSet Name="GENRES_FILMS" Association="Self.GENRES_FILMS">
+            <End Role="Genres" EntitySet="Genres" />
+            <End Role="Films" EntitySet="Films" />
+          </AssociationSet>
+          <AssociationSet Name="UserFavorisFilms" Association="Self.UserFavorisFilms">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OcineDbModelStoreContainer" CdmEntityContainer="OcineDbEntities">
+          <EntitySetMapping Name="Actor">
+            <EntityTypeMapping TypeName="OcineDbModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="ID_Actor" ColumnName="ID_Actor" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cinema">
+            <EntityTypeMapping TypeName="OcineDbModel.Cinema">
+              <MappingFragment StoreEntitySet="Cinema">
+                <ScalarProperty Name="ID_Cinema" ColumnName="ID_Cinema" />
+                <ScalarProperty Name="CinemaName" ColumnName="CinemaName" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="Raiting" ColumnName="Raiting" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Country">
+            <EntityTypeMapping TypeName="OcineDbModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="ID_Country" ColumnName="ID_Country" />
+                <ScalarProperty Name="Country1" ColumnName="Country" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Films">
+            <EntityTypeMapping TypeName="OcineDbModel.Films">
+              <MappingFragment StoreEntitySet="Films">
+                <ScalarProperty Name="ID_film" ColumnName="ID_film" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="AgePG" ColumnName="AgePG" />
+                <ScalarProperty Name="DirectorProduction" ColumnName="DirectorProduction" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="TraillerUrl" ColumnName="TraillerUrl" />
+                <ScalarProperty Name="Affiche" ColumnName="Affiche" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="About" ColumnName="About" />
+                <ScalarProperty Name="HasInScreening" ColumnName="HasInScreening" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="OcineDbModel.Genres">
+              <MappingFragment StoreEntitySet="Genres">
+                <ScalarProperty Name="ID_Genre" ColumnName="ID_Genre" />
+                <ScalarProperty Name="Genre" ColumnName="Genre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Premiere">
+            <EntityTypeMapping TypeName="OcineDbModel.Premiere">
+              <MappingFragment StoreEntitySet="Premiere">
+                <ScalarProperty Name="ID_Premiere" ColumnName="ID_Premiere" />
+                <ScalarProperty Name="PremiereDate" ColumnName="PremiereDate" />
+                <ScalarProperty Name="CountryPremieres" ColumnName="CountryPremieres" />
+                <ScalarProperty Name="ID_film" ColumnName="ID_film" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seances">
+            <EntityTypeMapping TypeName="OcineDbModel.Seances">
+              <MappingFragment StoreEntitySet="Seances">
+                <ScalarProperty Name="ID_Seances" ColumnName="ID_Seances" />
+                <ScalarProperty Name="PlayingDate" ColumnName="PlayingDate" />
+                <ScalarProperty Name="PlayingTime" ColumnName="PlayingTime" />
+                <ScalarProperty Name="ID_Cinema" ColumnName="ID_Cinema" />
+                <ScalarProperty Name="UrlSeances" ColumnName="UrlSeances" />
+                <ScalarProperty Name="ID_Film" ColumnName="ID_Film" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="OcineDbModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID_client" ColumnName="ID_client" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ActorsFilms" TypeName="OcineDbModel.ActorsFilms" StoreEntitySet="ActorsFilms">
+            <EndProperty Name="Actor">
+              <ScalarProperty Name="ID_Actor" ColumnName="ID_Actor" />
+            </EndProperty>
+            <EndProperty Name="Films">
+              <ScalarProperty Name="ID_film" ColumnName="ID_Films" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FilmsCountries" TypeName="OcineDbModel.FilmsCountries" StoreEntitySet="FilmsCountries">
+            <EndProperty Name="Country">
+              <ScalarProperty Name="ID_Country" ColumnName="ID_Country" />
+            </EndProperty>
+            <EndProperty Name="Films">
+              <ScalarProperty Name="ID_film" ColumnName="ID_film" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="GENRES_FILMS" TypeName="OcineDbModel.GENRES_FILMS" StoreEntitySet="GENRES_FILMS">
+            <EndProperty Name="Genres">
+              <ScalarProperty Name="ID_Genre" ColumnName="ID_Genre" />
+            </EndProperty>
+            <EndProperty Name="Films">
+              <ScalarProperty Name="ID_film" ColumnName="ID_film" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserFavorisFilms" TypeName="OcineDbModel.UserFavorisFilms" StoreEntitySet="UserFavorisFilms">
+            <EndProperty Name="Films">
+              <ScalarProperty Name="ID_film" ColumnName="ID_film" />
+            </EndProperty>
+            <EndProperty Name="User">
+              <ScalarProperty Name="ID_client" ColumnName="ID_client" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

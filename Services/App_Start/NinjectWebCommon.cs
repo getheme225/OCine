@@ -68,6 +68,8 @@ namespace Services.App_Start
             kernel.Bind<IUnitOfWork>().To<OcineDbEntities>().InRequestScope().Named(ContextualBinding.OcineDb);
             kernel.Bind<IAutoMapperConfig>().To<AutoMapperConfig>();
             kernel.Bind<IFilmServices>().To<FilmsService>();
+            kernel.Bind<ISeanceServices>().To<SeanceServices>();
+            kernel.Bind<ICinemaServices>().To<CinemaServices>();
         }        
     }
 }

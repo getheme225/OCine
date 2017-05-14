@@ -8,7 +8,7 @@ using Services.Interfaces;
 
 namespace OcineWebApi.Controllers
 {
-   [RoutePrefix("Film")]
+   
     public class FilmController : ApiController
     {
         private readonly IFilmServices _filmServices;

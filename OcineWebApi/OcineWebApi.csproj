@@ -240,7 +240,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Buisness Acces Layer\DTO\DTO.csproj">
-      <Project>{04996155-33b8-4496-be9e-fb8bcf8d79ff}</Project>
+      <Project>{cfec96bc-56de-407d-bdbc-45294537879a}</Project>
       <Name>DTO</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\CommonComponent\CommonComponent.csproj">

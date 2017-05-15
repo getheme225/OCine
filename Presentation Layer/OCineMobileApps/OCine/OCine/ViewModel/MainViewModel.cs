@@ -1,8 +1,6 @@
 using GalaSoft.MvvmLight;
-using OCineManagerApps.OcineManager.HttpClient.Interface;
-using PropertyChanged;
 
-namespace OCineManagerApps.OcineManager.ViewModel
+namespace OCine.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -16,16 +14,21 @@ namespace OCineManagerApps.OcineManager.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    [ImplementPropertyChanged]
     public class MainViewModel : ViewModelBase
     {
-        
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
         public MainViewModel()
         {
-            
+            ////if (IsInDesignMode)
+            ////{
+            ////    // Code runs in Blend --> create design time data.
+            ////}
+            ////else
+            ////{
+            ////    // Code runs "for real"
+            ////}
         }
-        public FilmsViewModel FilmVm { get; }
-        public CinemaViewModel CinemaVm { get; }
-        public SeancesViewModel SeancesVm { get; }
     }
 }

@@ -1,7 +1,7 @@
 /*
   In App.xaml:
   <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:OCineManagerApps.OcineManager"
+      <vm:ViewModelLocator xmlns:vm="clr-namespace:OCine"
                            x:Key="Locator" />
   </Application.Resources>
   
@@ -15,10 +15,8 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using OCineManagerApps.OcineManager.HttpClient;
-using OCineManagerApps.OcineManager.HttpClient.Interface;
 
-namespace OCineManagerApps.OcineManager.ViewModel
+namespace OCine.ViewModel
 {
     /// <summary>
     /// This class contains static references to all the view models in the
@@ -45,14 +43,16 @@ namespace OCineManagerApps.OcineManager.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<IWebApiConnection,WebApiConnection>();
-            
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-
-
-
+        public MainViewModel Main
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainViewModel>();
+            }
+        }
+        
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

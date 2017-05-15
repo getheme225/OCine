@@ -1,13 +1,29 @@
-﻿<Window
-    x:Class="OcineManager.MainWindow"
+﻿<controls:MetroWindow
+    x:Class="OCineManagerApps.OcineManager.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:OcineManager"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="525"
     Height="350"
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
     mc:Ignorable="d">
-    <Grid />
-</Window>
+    <Grid>
+        <TabControl Padding="0,20,0,0">
+            <TabItem DataContext="{Binding FilmVm}" Header="Фильмы">
+                Here put list of FIlm
+                and Button Add Cinema Delete Cinema Update Info about FIlm
+            </TabItem>
+            <TabItem DataContext="{Binding CinemaVm}" Header="Кинотеатры">
+                Here put list of Cinema
+                and Button Add Cinema Delete Cinema Update Info about Cinema
+            </TabItem>
+            <TabItem DataContext="{Binding SeancesVm}" Header="Сеансов">
+                Here put list of screening session
+                and Button Add screening session Delete screening session Update Info about screening session
+            </TabItem>
+        </TabControl>
+    </Grid>
+</controls:MetroWindow>

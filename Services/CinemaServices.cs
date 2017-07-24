@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Spatial;
+using System.Linq;
 using OCine.BAL.DTO;
 using OCine.BAL.Entity;
 using OCine.Common.CommonRepository.Interface;
@@ -14,34 +16,33 @@ namespace Services
     {
         public CinemaServices(IUnitOfWork work, IAutoMapperConfig mapperConfig) : base(work, mapperConfig)
         {
-            mapperConfig.AutoMapperConfigure<AutoMapperCinemaProfile>();
+            mapperConfig.AutoMapperConfigure<AutoMapperProfile>();
+            
         }
 
         public bool CreateCinema(CinemaDto cinema)
         {
-            var isExist = Exists<Cinema>(cinema.ID_Cinema);
-            if (isExist) return false;
-            else
+           
+            var entity = new Cinema
             {
-                var entity = new Cinema()
-                {
-                    ID_Cinema = cinema.ID_Cinema,
-                    CinemaName = cinema.CinemaName,
-                    Telephone = cinema.Telephone,
-                    Address = cinema.Address,
-                    WebSite = cinema.WebSite,
-                    Raiting = cinema.Raiting,
-                    Image = cinema.Image
-                };
-                Insert(entity);
-                Work.SaveChanges();
-                return true;
-            }
+                CinemaName = cinema.CinemaName,
+                Telephone = cinema.Telephone,
+                Address_Longitude = cinema.Address_Longitude,
+                Address_Latitude = cinema.Address_Latitude,
+                WebSite = cinema.WebSite,
+                Raiting = cinema.Raiting,
+                Image = cinema.Image,
+                
+
+            };
+            Insert(entity);
+            Work.SaveChanges();
+            return true;
         }
 
         public bool UpdateCinema(CinemaDto cinema)
         {
-            var isExist = Exists<Cinema>(cinema.ID_Cinema);
+            var isExist = GetAllCinema().Contains(cinema);
             if (!isExist) return false;
             else
             {
@@ -53,7 +54,7 @@ namespace Services
 
         public bool DeleteCinema(CinemaDto cinema)
         {
-            var isExist = Exists<Cinema>(cinema.ID_Cinema);
+            var isExist = GetAllCinema().Contains(cinema);
             if (!isExist) return false;
             else
             {

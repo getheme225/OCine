@@ -2,8 +2,10 @@
     x:Class="OcineManager.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:bingMap="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControls="clr-namespace:OCineManagerApps.OcineManager.Helper.UserControls"
     d1p1:Ignorable="d"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -12,12 +14,14 @@
                 xmlns:vm="clr-namespace:OCineManagerApps.OcineManager.ViewModel"
                 x:Key="Locator"
                 d:IsDataSource="True" />
+            <bingMap:ApplicationIdCredentialsProvider x:Key="MyCredentials" ApplicationId="AipJDOpvNp-Jnq9SpOIcSfNYA7G0-cc7Uc4J5K0QNzzvJ0gRTy_EisVg4iiZOMni" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

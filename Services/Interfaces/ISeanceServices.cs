@@ -9,11 +9,11 @@ namespace Services.Interfaces
 {
   public interface ISeanceServices
   {
-      bool CreateSeances(SeancesDto seance);
-      IEnumerable<SeancesDto> GetAllSeance();
-      IEnumerable<SeancesDto> GetAllNewlestSeances();
-      bool UpdateSeance(SeancesDto seance);
-      bool DeleteSeances(SeancesDto seance);
+      SeanceDto CreateSeances(SeanceDto seance);
+      IEnumerable<SeanceDto> GetAllSeance();
+      IEnumerable<SeanceDto> GetAllNewlestSeances();
+      bool UpdateSeance(SeanceDto seance);
+      bool DeleteSeances(SeanceDto seance);
 
 
   }

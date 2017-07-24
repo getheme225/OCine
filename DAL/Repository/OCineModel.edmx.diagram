@@ -4,22 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8756332df1d74b2f9f0f078bfb3b77af" Name="Diagram1">
-        <EntityTypeShape EntityType="OcineDbModel.Actor" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.Cinema" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.Country" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.Films" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.Genres" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.Premiere" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.Seances" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OcineDbModel.User" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
-        <AssociationConnector Association="OcineDbModel.SeanceInCimena" ManuallyRouted="false" />
-        <AssociationConnector Association="OcineDbModel.InScreening" ManuallyRouted="false" />
+      <Diagram DiagramId="9f3d6f0e189e48f99614df4fc42220ae" Name="Diagram1" ZoomLevel="89">
+        <EntityTypeShape EntityType="OcineDbModel.Actor" Width="1.75" PointX="1" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OcineDbModel.Cinema" Width="1.5" PointX="11.625" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OcineDbModel.Country" Width="1.5" PointX="5.125" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OcineDbModel.Films" Width="2.125" PointX="4.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="OcineDbModel.Premiere" Width="1.5" PointX="1.625" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OcineDbModel.sysdiagrams" Width="1.5" PointX="8.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OcineDbModel.User" Width="1.75" PointX="4.25" PointY="11.125" IsExpanded="true" />
         <AssociationConnector Association="OcineDbModel.Premiere_Film" ManuallyRouted="false" />
         <AssociationConnector Association="OcineDbModel.ActorsFilms" ManuallyRouted="false" />
         <AssociationConnector Association="OcineDbModel.FilmsCountries" ManuallyRouted="false" />
-        <AssociationConnector Association="OcineDbModel.GENRES_FILMS" ManuallyRouted="false" />
         <AssociationConnector Association="OcineDbModel.UserFavorisFilms" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="OcineDbModel.Genre" Width="2" PointX="8.375" PointY="9.75" />
+        <EntityTypeShape EntityType="OcineDbModel.Seance" Width="1.5" PointX="8.125" PointY="6.375" />
+        <AssociationConnector Association="OcineDbModel.SeanceInCimena1" />
+        <AssociationConnector Association="OcineDbModel.InScreening1" />
+        <AssociationConnector Association="OcineDbModel.GENRES_FILMS1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,15 +15,15 @@ namespace Ocine.DAL.Repository
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using OCine.Common.CommonRepository.Interface;
-    
+
     public partial class OcineDbEntities : DbContext, IUnitOfWork
     {
         public OcineDbEntities()
             : base("name=OcineDbEntities")
         {
-           
+
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -43,10 +43,10 @@ namespace Ocine.DAL.Repository
         public virtual DbSet<Cinema> Cinema { get; set; }
         public virtual DbSet<Country> Country { get; set; }
         public virtual DbSet<Films> Films { get; set; }
-        public virtual DbSet<Genres> Genres { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Premiere> Premiere { get; set; }
-        public virtual DbSet<Seances> Seances { get; set; }
+        public virtual DbSet<Seance> Seances { get; set; }
         public virtual DbSet<User> User { get; set; }
-        
+
     }
 }

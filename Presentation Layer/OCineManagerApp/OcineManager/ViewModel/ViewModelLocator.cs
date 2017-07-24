@@ -15,8 +15,13 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using OCineManagerApps.OcineManager.HttpClient;
-using OCineManagerApps.OcineManager.HttpClient.Interface;
+using OCine.BAL.DTO;
+using OCineManagerApps.OcineManager.DATA;
+using OCineManagerApps.OcineManager.DATA.Interfaces;
+using OCineManagerApps.OcineManager.Helper;
+using OCineManagerApps.OcineManager.Helper.UserControls;
+using OCineManagerApps.OcineManager.RefreshInterface;
+using System;
 
 namespace OCineManagerApps.OcineManager.ViewModel
 {
@@ -32,6 +37,7 @@ namespace OCineManagerApps.OcineManager.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
+           
 
             ////if (ViewModelBase.IsInDesignModeStatic)
             ////{
@@ -45,17 +51,31 @@ namespace OCineManagerApps.OcineManager.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<IWebApiConnection,WebApiConnection>();
-            
+            SimpleIoc.Default.Register<FilmsViewModel>();
+            SimpleIoc.Default.Register<SeancesViewModel>();
+            SimpleIoc.Default.Register<CreateFilmVIewModel>();
+            SimpleIoc.Default.Register<CinemaViewModel>();
+            SimpleIoc.Default.Register<IFilmsRequest, FilmsRequest>();
+            SimpleIoc.Default.Register< ICinemaRequest, CinemaRequest >();
+            SimpleIoc.Default.Register<IActorRequest, ActorRequest>();
+            SimpleIoc.Default.Register<ICountryRequest, CountryRequest>();
+            SimpleIoc.Default.Register<IGenreRequest, GenreRequest>();
+            SimpleIoc.Default.Register<ISeancesRequest, SeancesRequest >();
+            SimpleIoc.Default.Register<FilmShedulesListView>();
+            SimpleIoc.Default.Register<CreateCinemaViewModel>();
+            SimpleIoc.Default.Register<AddSeancesViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
-
-
-
-        public static void Cleanup()
+        public FilmsViewModel FilmVm => ServiceLocator.Current.GetInstance<FilmsViewModel>();
+        public CinemaViewModel CinemaVm => ServiceLocator.Current.GetInstance<CinemaViewModel>();
+        public SeancesViewModel SeancesVm => ServiceLocator.Current.GetInstance<SeancesViewModel>();
+        public CreateFilmVIewModel CreateVm => ServiceLocator.Current.GetInstance<CreateFilmVIewModel>();
+        public CreateCinemaViewModel CreateCinemaVm => ServiceLocator.Current.GetInstance<CreateCinemaViewModel>();
+        public AddSeancesViewModel AddSeancesVm => ServiceLocator.Current.GetInstance<AddSeancesViewModel>();
+        public static void Cleanup<T>(T t) where T:class, new ()
         {
-            // TODO Clear the ViewModels
+            
         }
     }
 }

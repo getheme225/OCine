@@ -70,11 +70,15 @@ namespace OcineWebApi.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IUnitOfWork>().To<OcineDbEntities>().InRequestScope().Named(ContextualBinding.OcineDb);
-            kernel.Bind<IFilmServices>().To<FilmsService>();
             kernel.Bind<IAutoMapperConfig>().To<AutoMapperConfig>();
+            kernel.Bind<IActorsServices>().To<ActorServices>();
+            kernel.Bind<ICountryServices>().To<CountryServices>();
+            kernel.Bind<IGenreServices>().To<GenreServices>();
+            kernel.Bind<IFilmServices>().To<FilmsService>();
             kernel.Bind<ISeanceServices>().To<SeanceServices>();
             kernel.Bind<ICinemaServices>().To<CinemaServices>();
-
+           
+           
         }        
     }
 }

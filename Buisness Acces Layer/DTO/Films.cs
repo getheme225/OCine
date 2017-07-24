@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OCine.BAL.DTO
 {
-    public partial class FilmsDto
+    public  class FilmsDto
     {
         public int ID_film { get; set; }
         public string Title { get; set; }
@@ -16,9 +16,10 @@ namespace OCine.BAL.DTO
         public double? Rating { get; set; }
         public string About { get; set; }
         public bool? HasInScreening { get; set; }
-        public ICollection<ActorDto> Actors { get; set; }
-        public ICollection<CountryDto> Countries { get; set; }
-        public ICollection<PremiereDto> Premieres { get; set;}
-        public ICollection<GenresDto> Genres { get; set; }
-    }
+        public ICollection<ActorDto> Actor { get; set; }
+        public ICollection<CountryDto> Country { get; set; }
+        public ICollection<PremiereDto> Premiere { get; set;}
+        public ICollection<GenreDto> Genre { get; set; }
+        public ICollection<SeanceDto> Seance { get; set; }
+    } 
 }

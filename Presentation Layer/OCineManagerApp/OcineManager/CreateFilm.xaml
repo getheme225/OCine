@@ -1,0 +1,267 @@
+﻿
+<controls:MetroWindow
+    x:Class="OCineManagerApps.OcineManager.CreateFilm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:OCineManagerApps.OcineManager"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControls="clr-namespace:OCineManagerApps.OcineManager.Helper.UserControls"
+    Title="CreateFilm"
+    Width="700"
+    Height="700"
+    DataContext="{Binding CreateVm, Source={StaticResource Locator}}"
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <ScrollViewer Padding="10" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    Margin="10"
+                    DataContext="{Binding Films}">
+                    <WrapPanel>
+                        <Label Content="Title" FontSize="20" />
+                        <TextBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Text="{Binding Title}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Age Pg" FontSize="20" />
+                        <TextBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Text="{Binding AgePG}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Director Production" FontSize="20" />
+                        <TextBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Text="{Binding DirectorProduction}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Duration" FontSize="20" />
+                        <TextBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            controls:TextBoxHelper.HasText="True"
+                            FontSize="15"
+                            Text="{Binding Duration}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Raiting" FontSize="20" />
+                        <TextBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Text="{Binding Rating}" />
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Trailler" FontSize="20" />
+                        <TextBox
+                            Width="200"
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Text="{Binding TraillerUrl}" />
+                    </WrapPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <Border BorderBrush="Black" BorderThickness="5">
+                        <Image
+                            Height="300"
+                            Source="{Binding AfficheImage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            Stretch="UniformToFill" />
+                    </Border>
+                    <Button
+                        HorizontalAlignment="Left"
+                        Command="{Binding BrowseImageCommand}"
+                        Content="BROWSE IMAGE"
+                        FontSize="15" />
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="1">
+                <StackPanel Margin="10">
+                    <WrapPanel>
+                        <WrapPanel>
+                            <Label Content="Countries  " FontSize="20" />
+                            <Button
+                                Width="25"
+                                Height="25"
+                                Command="{Binding AddCountryUserControlCommand}">
+                                <Button.Content>
+                                    <Image Source="Images/add.png" />
+                                </Button.Content>
+                            </Button>
+                        </WrapPanel>
+                        <ItemsControl
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding AddCountryUserControlCollection}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBox
+                                        Width="100"
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Country1}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </WrapPanel>
+
+                    <WrapPanel>
+                        <WrapPanel>
+                            <Label Content="Actors       " FontSize="20" />
+                            <Button
+                                Width="25"
+                                Height="25"
+                                Command="{Binding AddActorUserControlCommand}">
+                                <Button.Content>
+                                    <Image Source="Images/add.png" />
+                                </Button.Content>
+                            </Button>
+                        </WrapPanel>
+                        <ItemsControl
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding AddActorUserControlCollection}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBox
+                                        Width="100"
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <WrapPanel>
+                            <Label Content="Genres      " FontSize="20" />
+                            <Button
+                                Width="25"
+                                Height="25"
+                                Command="{Binding AddGenreUserControlCommand}">
+                                <Button.Content>
+                                    <Image Source="Images/add.png" />
+                                </Button.Content>
+                            </Button>
+                        </WrapPanel>
+                        <ItemsControl
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding AddGenresUserControlsCollection}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBox
+                                        Width="100"
+                                        Margin="5,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding GenreName}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <WrapPanel>
+                            <Label Content="Premieres " FontSize="20" />
+                            <Button
+                                Width="25"
+                                Height="25"
+                                Command="{Binding AddPremiereUserControlCommand}">
+                                <Button.Content>
+                                    <Image Source="Images/add.png" />
+                                </Button.Content>
+                            </Button>
+                        </WrapPanel>
+                        <ItemsControl
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            ItemsSource="{Binding AddPremiereUserControlsCollection}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <WrapPanel>
+                                        <DatePicker SelectedDate="{Binding PremiereDate}" />
+                                        <TextBox
+                                            Width="100"
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding CountryPremieres}" />
+                                    </WrapPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </WrapPanel>
+
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="2">
+                <StackPanel>
+                    <Label Content="About" FontSize="20" />
+                    <Border
+                        Height="100"
+                        BorderBrush="Black"
+                        BorderThickness="2">
+                        <TextBox Text="{Binding About}" TextWrapping="Wrap" />
+                    </Border>
+                </StackPanel>
+
+            </Grid>
+            <StackPanel
+                Grid.Row="3"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    Command="{Binding SubmitFilm}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}"
+                    Content="Sumbit"
+                    FontSize="20" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</controls:MetroWindow>

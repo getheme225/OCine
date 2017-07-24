@@ -4,25 +4,191 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
-    Width="525"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:userControls="clr-namespace:OCineManagerApps.OcineManager.Helper.UserControls"
+    xmlns:viewModel="clr-namespace:OCineManagerApps.OcineManager.ViewModel"
+    Title="OCine Manager App"
+    Width="900"
     Height="350"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
     mc:Ignorable="d">
+    <controls:MetroWindow.Resources>
+        <DataTemplate x:Key="FilmShedulleTemplate">
+            <StackPanel>
+                <Label
+                    Content="{Binding SeancesVm.FilmScheduleses/FilmTitle}"
+                    FontSize="20"
+                    FontWeight="ExtraBold" />
+                <ItemsControl ItemsSource="{Binding SeancesVm.FilmScheduleses/SeancesTime}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                FontSize="15"
+                                FontWeight="Bold"
+                                Text="{Binding Value}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </DataTemplate>
+    </controls:MetroWindow.Resources>
     <Grid>
         <TabControl Padding="0,20,0,0">
-            <TabItem DataContext="{Binding FilmVm}" Header="Фильмы">
-                Here put list of FIlm
-                and Button Add Cinema Delete Cinema Update Info about FIlm
+            <TabItem DataContext="{Binding FilmVm, Source={StaticResource Locator}}" Header="Фильмы">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding FilmsList, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding ID_film}"
+                                Header="ID"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Title}"
+                                Header="TITLE"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding DirectorProduction}"
+                                Header="DIrector Production"
+                                IsReadOnly="True" />
+                            <DataGridHyperlinkColumn
+                                Binding="{Binding TraillerUrl}"
+                                Header="Trailler"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Duration}"
+                                Header="Duration"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding AgePG}"
+                                Header="AgePG"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Rating}"
+                                Header="Raiting"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding HasInScreening}"
+                                Header="InScrenning"
+                                IsReadOnly="True" />
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+
+                        <Button
+                            Margin="5"
+                            Command="{Binding AddNewFilm}"
+                            Content="ADD NEW FILM"
+                            FontSize="15" />
+
+                        <Button
+                            Margin="5"
+                            Command="{Binding ReFreshCommand}"
+                            Content="REFRESH LIST"
+                            FontSize="15" />
+
+                        <Button
+                            Margin="5"
+                            Command="{Binding AddToSeances}"
+                            Content="Manage Seances"
+                            FontSize="15" />
+                    </StackPanel>
+                </Grid>
             </TabItem>
-            <TabItem DataContext="{Binding CinemaVm}" Header="Кинотеатры">
-                Here put list of Cinema
-                and Button Add Cinema Delete Cinema Update Info about Cinema
+            <TabItem DataContext="{Binding CinemaVm, Source={StaticResource Locator}}" Header="Кинотеатры">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding CinemaList, ValidatesOnExceptions=True}"
+                        SelectedItem="{Binding SelectedCinema}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Binding="{Binding ID_Cinema}"
+                                Header="ID"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding CinemaName}"
+                                Header="NAME"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Telephone}"
+                                Header="TELEPHONE"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.CinemaVm.Address}"
+                                Header="ADDRESS"
+                                IsReadOnly="True" />
+                            <DataGridHyperlinkColumn
+                                Binding="{Binding WebSite}"
+                                Header="WebSite"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+
+                        <Button
+                            Margin="5"
+                            Command="{Binding AddCinema}"
+                            Content="ADD NEW CiNEMA"
+                            FontSize="15" />
+
+                        <Button
+                            Margin="5"
+                            Command="{Binding RefreshCinemaLits}"
+                            Content="REFRESH LIST"
+                            FontSize="15" />
+                    </StackPanel>
+                </Grid>
             </TabItem>
-            <TabItem DataContext="{Binding SeancesVm}" Header="Сеансов">
-                Here put list of screening session
-                and Button Add screening session Delete screening session Update Info about screening session
+            <TabItem DataContext="{Binding SeancesVm, Source={StaticResource Locator}}" Header="Сеансов">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <WrapPanel HorizontalAlignment="Center">
+                        <Label Content="CINEMA" FontSize="15" />
+                        <ComboBox
+                            Width="100"
+                            Margin="5,0,0,0"
+                            DisplayMemberPath="CinemaName"
+                            FontSize="15"
+                            ItemsSource="{Binding CinemaListForSeance, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedCinemaForSeances, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                        <Label
+                            Width="50"
+                            Margin="5,0,0,0"
+                            Content="DATE"
+                            FontSize="15" />
+                        <controls:DateTimePicker VerticalContentAlignment="Center" SelectedDate="{Binding SelectedDate}" />
+                    </WrapPanel>
+                    <StackPanel Grid.Row="1">
+                        <ListView ItemTemplate="{DynamicResource FilmShedulleTemplate}" ItemsSource="{Binding FilmScheduleses, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

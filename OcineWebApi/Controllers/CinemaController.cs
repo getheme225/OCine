@@ -17,6 +17,7 @@ namespace OcineWebApi.Controllers
         {
             _cinemaService = cinemaService;
         }
+        [HttpGet]
         public IEnumerable<CinemaDto> Get()
         {
             return _cinemaService.GetAllCinema();

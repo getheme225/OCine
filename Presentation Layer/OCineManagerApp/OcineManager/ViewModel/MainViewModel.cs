@@ -1,5 +1,5 @@
 using GalaSoft.MvvmLight;
-using OCineManagerApps.OcineManager.HttpClient.Interface;
+
 using PropertyChanged;
 
 namespace OCineManagerApps.OcineManager.ViewModel
@@ -22,7 +22,6 @@ namespace OCineManagerApps.OcineManager.ViewModel
         
         public MainViewModel()
         {
-            
         }
         public FilmsViewModel FilmVm { get; }
         public CinemaViewModel CinemaVm { get; }

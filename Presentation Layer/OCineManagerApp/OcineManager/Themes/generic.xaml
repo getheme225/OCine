@@ -1,0 +1,31 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:OCineManagerApps.OcineManager.Helper.UserControls">
+    <Style
+        x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type local:FilmShedulesListView},
+                                     ResourceId=FilmShedulesListView}"
+        BasedOn="{StaticResource {x:Type ListBoxItem}}"
+        TargetType="{x:Type ListViewItem}">
+        <Setter Property="Padding" Value="3" />
+        <!--    <Setter Property="Margin" Value="5"/>-->
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="ContentTemplate" Value="{Binding Path=ItemTemplate, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListView}}}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border
+                        Name="Border"
+                        BorderThickness="1"
+                        CornerRadius="3">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>
+

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using  AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -15,7 +16,7 @@ namespace OCine.Common.CommonService
       protected readonly IUnitOfWork Work;
       protected readonly IAutoMapperConfig MapperConfig;
 
-      public BaseService(IUnitOfWork work, IAutoMapperConfig mapperConfig)
+        protected BaseService(IUnitOfWork work, IAutoMapperConfig mapperConfig)
       {
           Work = work;
           MapperConfig = mapperConfig;
@@ -34,9 +35,10 @@ namespace OCine.Common.CommonService
 
       public IEnumerable<T1> GetAll<T1, T2>() where T1 : class where T2 : class
       {
-          var list = Work.Db.Set<T2>().ProjectTo<T1>(MapperConfig).ToList();
-          return list;
-      }
+            var list = Work.Db.Set<T2>().ProjectTo<T1>(MapperConfig).ToList();
+
+            return list;
+        }
 
       public bool Exists<T>(object primaryKey) where T : class
       {
@@ -55,5 +57,11 @@ namespace OCine.Common.CommonService
           Work.Db.Set<T>().Remove(entity);
       }
 
+        public bool AreStringEqual(string first, string second)
+        {
+            var firstStringRegex = first.Replace(" ", "");
+            var secondStringRegex = second.Replace(" ", "");
+            return firstStringRegex.Equals(secondStringRegex, StringComparison.CurrentCultureIgnoreCase);
+        }
    }
 }

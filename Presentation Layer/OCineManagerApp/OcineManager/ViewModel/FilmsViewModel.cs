@@ -1,41 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Windows;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using OCine.BAL.DTO;
-using OCineManagerApps.OcineManager.HttpClient.Interface;
+using OCineManagerApps.OcineManager.DATA.Interfaces;
 using PropertyChanged;
 
 namespace OCineManagerApps.OcineManager.ViewModel
 {
     [ImplementPropertyChanged]
-    public class FilmsViewModel
+    public class FilmsViewModel :ViewModelBase
     {
-        private readonly IWebApiConnection _webApi;
+       /// <summary>
+       /// Интерфейс для запроса
+       /// </summary>
+        protected readonly IFilmsRequest FilmDataHttpProxy;
 
-        public FilmsViewModel(IWebApiConnection webApi)
+        /// <summary>
+        /// Экземпляр фильма
+        /// </summary>
+        public FilmsDto FilmVm { get; set; }
+
+        /// <summary>
+        /// Список фильмов 
+        /// </summary>
+        public ObservableCollection<FilmsDto> FilmsList { get; set; }      
+
+        /// <summary>
+        /// Обработка кнопки для редактирования фильма
+        /// </summary>
+        //public RelayCommand EditFilm { get; private set; }
+
+        /// <summary>
+        /// Обработкчить кнопки для добавления сеансов к фильма "Переход к окне  управления сеансов
+        /// </summary>
+        public RelayCommand AddToSeances { get; private set; }
+
+        /// <summary>
+        /// Обрабаботчик кнопки добавления нового фильма 
+        /// </summary>
+        public RelayCommand AddNewFilm { get; private set; }
+
+        public RelayCommand ReFreshCommand { get; private set; }
+        
+        public FilmsViewModel(IFilmsRequest filmDataHttpProxy)
         {
-            _webApi = webApi;
-            GetFilmList();
+            FilmDataHttpProxy = filmDataHttpProxy;
+            AddNewFilm = new RelayCommand(() => new CreateFilm().Show());
+            FilmsList = new ObservableCollection<FilmsDto>();
+            AllFilmFromApi();
+            ReFreshCommand = new RelayCommand(AllFilmFromApi);
+            AddToSeances = new RelayCommand(() => new AddSeances().Show());
         }
 
-        public FilmsDto FilmVm { get; set; }
-        public ObservableCollection<FilmsDto> FilmsList { get; private set; }
 
-        private async void GetFilmList()
+        public async void AllFilmFromApi()
         {
             try
             {
-                HttpResponseMessage result = await _webApi.Client.GetAsync("api/film");
-                result.EnsureSuccessStatusCode();
-                var list = await result.Content.ReadAsAsync<IEnumerable<FilmsDto>>();
-                FilmsList = new ObservableCollection<FilmsDto>(list);
+                var result = await FilmDataHttpProxy.GetAllItems();
+                FilmsList = new ObservableCollection<FilmsDto>(result);
             }
-            catch (Exception e)
+            catch(Exception ex)
             {
-                MessageBox.Show(e.Message);
+             //ToDo need Exception For getting All Films   
             }
+
         }
     }
 }

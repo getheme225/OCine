@@ -20,32 +20,32 @@ namespace OcineWebApi.Controllers
 
         
         // GET: api/Seances
-        public IEnumerable<SeancesDto> Get()
+        public IEnumerable<SeanceDto> Get()
         {
             return _seanceServices.GetAllSeance();
         }
+        [HttpPost]
+        // POST: api/Seances
+        public HttpResponseMessage Post(SeanceDto seance)
+        {
+            var canCreate = _seanceServices.CreateSeances(seance);
 
+            return Request.CreateResponse(HttpStatusCode.Created, canCreate);
+
+        }
         [Route("api/seances/getnewlest")]
         [HttpGet]
         // GET: api/Seances/getnewlest
-        public IEnumerable<SeancesDto> GetFeshSeances()
+        public IEnumerable<SeanceDto> GetFeshSeances()
         {
             return _seanceServices.GetAllNewlestSeances();
         }
 
-        [HttpPost]
-        // POST: api/Seances
-        public HttpResponseMessage Post(SeancesDto seance)
-        {
-            var canCreate = _seanceServices.CreateSeances(seance);
-            return (canCreate)
-                ? Request.CreateResponse(HttpStatusCode.ExpectationFailed, seance)
-                : Request.CreateErrorResponse(HttpStatusCode.Conflict, $"Seances № {seance.ID_Seances} already exist");
-        }
+       
 
         [HttpPut]
         // PUT: api/Seances/5
-        public HttpResponseMessage Put(SeancesDto seance)
+        public HttpResponseMessage Put(SeanceDto seance)
         {
             var canUpdate = _seanceServices.UpdateSeance(seance);
             return (canUpdate)
@@ -55,7 +55,7 @@ namespace OcineWebApi.Controllers
 
         [HttpDelete]
         // DELETE: api/Seances/5
-        public HttpResponseMessage Delete(SeancesDto seance)
+        public HttpResponseMessage Delete(SeanceDto seance)
         {
             var canDelete = _seanceServices.DeleteSeances(seance);
             return (canDelete)

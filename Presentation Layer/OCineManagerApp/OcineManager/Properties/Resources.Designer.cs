@@ -59,5 +59,23 @@ namespace OCineManagerApps.OcineManager.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Film Posted Succeslly.
+        /// </summary>
+        internal static string CreateFilmVIewModel_PullServeur_Film_Posted_Succeslly {
+            get {
+                return ResourceManager.GetString("CreateFilmVIewModel_PullServeur_Film_Posted_Succeslly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Succes.
+        /// </summary>
+        internal static string Succes {
+            get {
+                return ResourceManager.GetString("Succes", resourceCulture);
+            }
+        }
     }
 }

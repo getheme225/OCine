@@ -1,0 +1,96 @@
+﻿<controls:MetroWindow
+    x:Class="OCineManagerApps.OcineManager.AddSeances"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:OCineManagerApps.OcineManager"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="AddSeances"
+    Width="600"
+    Height="300"
+    mc:Ignorable="d"
+    DataContext ="{Binding AddSeancesVm, Source={StaticResource Locator}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+
+        </Grid.RowDefinitions>
+        <WrapPanel
+            Grid.Row="0"
+            Margin="10"
+            HorizontalAlignment="Center">
+            <Label
+                Margin="5,0,0,0"
+                HorizontalContentAlignment="Center"
+                Content="Films" />
+            <ComboBox
+                Width="100"
+                Margin="5,0,0,0"
+                DisplayMemberPath="Title"
+                FontSize="15"
+                ItemsSource="{Binding FilmNotInScreenList, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedFilm, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+            <Label Margin="5,0,0,0" Content="CINEMA" />
+            <ComboBox
+                Width="100"
+                Margin="5,0,0,0"
+                DisplayMemberPath="CinemaName"
+                FontSize="15"
+                ItemsSource="{Binding CinemaList, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedCinema, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+            <controls:DateTimePicker VerticalContentAlignment="Center" SelectedDate="{Binding SelectedDate}" />
+        </WrapPanel>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Center">
+            <Button
+                HorizontalAlignment="Center"
+                Command="{Binding AddNewSeancesTime}"
+                Content="Add New Seances" />
+            <Button
+                Width="100"
+                Margin="20,0,0,0"
+                HorizontalAlignment="Center"
+                Command="{Binding Submit}"
+                CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:MetroWindow}}}"
+                Content="SUBMIT" />
+        </WrapPanel>
+        <Border
+            Grid.Row="2"
+            Padding="2"
+            BorderBrush="Black"
+            BorderThickness="2">
+            <Grid>
+                <ItemsControl ItemsSource="{Binding SeancesList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <Label Content="Playing Time" />
+                                <TextBox
+                                    Width="50"
+                                    Margin="5,0,0,0"
+                                    Text="{Binding PlayingTime}" />
+                                <Label Margin="5,0,0,0" Content="Url" />
+                                <TextBox
+                                    Width="100"
+                                    Margin="5,0,0,0"
+                                    Text="{Binding UrlSeances}" />
+                                <CheckBox Margin="5,0,0,0" IsChecked="{Binding Has3D, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                                <Label
+                                    Content="3D"
+                                    FontSize="15"
+                                    FontWeight="ExtraBold" />
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+    </Grid>
+</controls:MetroWindow>

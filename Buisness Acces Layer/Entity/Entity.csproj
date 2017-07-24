@@ -53,10 +53,10 @@
     <Compile Include="Cinema.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Films.cs" />
-    <Compile Include="Genres.cs" />
+    <Compile Include="Genre.cs" />
     <Compile Include="Premiere.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Seances.cs" />
+    <Compile Include="Seance.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>

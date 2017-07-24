@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OCine.BAL.DTO
 {
@@ -8,5 +9,6 @@ namespace OCine.BAL.DTO
         public DateTime? PremiereDate { get; set; }
         public string CountryPremieres { get; set; }
         public int? ID_film { get; set; }
+       
     }
 }

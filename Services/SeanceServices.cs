@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using CommonComponent.Ninject;
 using Ninject;
@@ -19,59 +17,56 @@ namespace Services
     {
         public SeanceServices([Named(ContextualBinding.OcineDb)] IUnitOfWork work, IAutoMapperConfig mapperConfig) : base(work, mapperConfig)
         {
-            mapperConfig.AutoMapperConfigure<AutoMapperSeancesProfile>();
+            mapperConfig.AutoMapperConfigure<AutoMapperProfile>();
         }
 
-        public bool CreateSeances(SeancesDto seance)
+        public SeanceDto CreateSeances(SeanceDto seance)
         {
-            var isExist = Exists<Seances>(seance.ID_Seances);
-            if (isExist) return false;
-            else
-            {
-                var entity = new Seances()
+               
+                var entity = new Seance
                 {
-                    ID_Seances = seance.ID_Seances,
                     PlayingDate = seance.PlayingDate,
                     PlayingTime = seance.PlayingTime,
+                    Films = Mapper.Map<Films>(seance.Films),
                     Cinema = Mapper.Map<Cinema>(seance.Cinema),
-                    Films = Mapper.Map<Films>(seance.Film),
-                    UrlSeances = seance.UrlSeances
+                    UrlSeances = seance.UrlSeances,
+                    Has3D = seance.Has3D
                 };
-                Insert(entity);
-                Work.Db.SaveChanges();
-                return true;
-            }
+            Insert(entity);
+            Work.Db.SaveChanges();
+            return Mapper.Map<SeanceDto>(entity);
         }
+        
 
-        public IEnumerable<SeancesDto> GetAllSeance()
+        public IEnumerable<SeanceDto> GetAllSeance()
         {
-            return GetAll<SeancesDto, Seances>();
+            return GetAll<SeanceDto, Seance>();
         }
 
-        public IEnumerable<SeancesDto> GetAllNewlestSeances()
+        public IEnumerable<SeanceDto> GetAllNewlestSeances()
         {
             return GetAllSeance().Where(s => s.PlayingDate >= DateTime.Today.Date);
         }
 
-        public bool UpdateSeance(SeancesDto seance)
+        public bool UpdateSeance(SeanceDto seance)
         {
-            var isExist = Exists<Seances>(seance.ID_Seances);
+            var isExist = Exists<Seance>(seance.ID_Seances);
             if (!isExist) return false;
             else
             {
-                Update(Mapper.Map<Seances>(seance));
+                Update(Mapper.Map<Seance>(seance));
                 Work.Db.SaveChanges();
                 return true;
             }
         }
 
-        public bool DeleteSeances(SeancesDto seance)
+        public bool DeleteSeances(SeanceDto seance)
         {
-            var isExist = Exists<Seances>(seance.ID_Seances);
+            var isExist = Exists<Seance>(seance.ID_Seances);
             if (!isExist) return false;
             else
             {
-                Delete(Mapper.Map<Seances>(seance));
+                Delete(Mapper.Map<Seance>(seance));
                 Work.Db.SaveChanges();
                 return true;
             }

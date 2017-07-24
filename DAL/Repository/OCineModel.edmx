@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="OcineDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="OcineDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Actor">
           <Key>
             <PropertyRef Name="ID_Actor" />
@@ -12,8 +12,6 @@
           <Property Name="ID_Actor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nchar" MaxLength="25" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OcineDb.dbo.ActorsFilms' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ActorsFilms">
           <Key>
             <PropertyRef Name="ID_Films" />
@@ -29,10 +27,11 @@ warning 6002: The table/view 'OcineDb.dbo.ActorsFilms' does not have a primary k
           <Property Name="ID_Cinema" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CinemaName" Type="nchar" MaxLength="20" />
           <Property Name="Telephone" Type="nchar" MaxLength="12" />
-          <Property Name="Address" Type="geography" />
           <Property Name="WebSite" Type="nvarchar" MaxLength="50" />
           <Property Name="Raiting" Type="float" />
           <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="Address_Longitude" Type="float" />
+          <Property Name="Address_Latitude" Type="float" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -46,18 +45,16 @@ warning 6002: The table/view 'OcineDb.dbo.ActorsFilms' does not have a primary k
             <PropertyRef Name="ID_film" />
           </Key>
           <Property Name="ID_film" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar(max)" />
           <Property Name="AgePG" Type="int" />
           <Property Name="DirectorProduction" Type="nchar" MaxLength="50" />
           <Property Name="Duration" Type="time" Precision="0" />
           <Property Name="TraillerUrl" Type="nchar" MaxLength="50" />
           <Property Name="Affiche" Type="varbinary(max)" />
           <Property Name="Rating" Type="float" />
-          <Property Name="About" Type="varchar(max)" />
+          <Property Name="About" Type="nvarchar(max)" />
           <Property Name="HasInScreening" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OcineDb.dbo.FilmsCountries' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="FilmsCountries">
           <Key>
             <PropertyRef Name="ID_Country" />
@@ -66,15 +63,13 @@ warning 6002: The table/view 'OcineDb.dbo.FilmsCountries' does not have a primar
           <Property Name="ID_Country" Type="int" Nullable="false" />
           <Property Name="ID_film" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Genres">
+        <EntityType Name="Genre">
           <Key>
             <PropertyRef Name="ID_Genre" />
           </Key>
           <Property Name="ID_Genre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Genre" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="GenreName" Type="nchar" MaxLength="15" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'OcineDb.dbo.GENRES_FILMS' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="GENRES_FILMS">
           <Key>
             <PropertyRef Name="ID_film" />
@@ -92,7 +87,7 @@ warning 6002: The table/view 'OcineDb.dbo.GENRES_FILMS' does not have a primary 
           <Property Name="CountryPremieres" Type="nchar" MaxLength="25" />
           <Property Name="ID_film" Type="int" />
         </EntityType>
-        <EntityType Name="Seances">
+        <EntityType Name="Seance">
           <Key>
             <PropertyRef Name="ID_Seances" />
           </Key>
@@ -102,6 +97,7 @@ warning 6002: The table/view 'OcineDb.dbo.GENRES_FILMS' does not have a primary 
           <Property Name="ID_Cinema" Type="int" />
           <Property Name="UrlSeances" Type="nchar" MaxLength="25" />
           <Property Name="ID_Film" Type="int" />
+          <Property Name="Has3D" Type="bit" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -138,7 +134,9 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           </ReferentialConstraint>
         </Association>
         <Association Name="Country_Films">
-          <End Role="Country" Type="Self.Country" Multiplicity="1" />
+          <End Role="Country" Type="Self.Country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FilmsCountries" Type="Self.FilmsCountries" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Country">
@@ -177,20 +175,6 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="filmsGenres">
-          <End Role="Genres" Type="Self.Genres" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="GENRES_FILMS" Type="Self.GENRES_FILMS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Genres">
-              <PropertyRef Name="ID_Genre" />
-            </Principal>
-            <Dependent Role="GENRES_FILMS">
-              <PropertyRef Name="ID_Genre" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ActorsFilms_Films">
           <End Role="Films" Type="Self.Films" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -205,7 +189,7 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="GenresFilms">
+        <Association Name="FK_GENRES_FILMS_Films">
           <End Role="Films" Type="Self.Films" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -219,16 +203,30 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_GENRES_FILMS_Genre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="GENRES_FILMS" Type="Self.GENRES_FILMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="ID_Genre" />
+            </Principal>
+            <Dependent Role="GENRES_FILMS">
+              <PropertyRef Name="ID_Genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="InScreening">
           <End Role="Films" Type="Self.Films" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Films">
               <PropertyRef Name="ID_film" />
             </Principal>
-            <Dependent Role="Seances">
+            <Dependent Role="Seance">
               <PropertyRef Name="ID_Film" />
             </Dependent>
           </ReferentialConstraint>
@@ -261,43 +259,28 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
         </Association>
         <Association Name="SeanceInCimena">
           <End Role="Cinema" Type="Self.Cinema" Multiplicity="0..1" />
-          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
+          <End Role="Seance" Type="Self.Seance" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Cinema">
               <PropertyRef Name="ID_Cinema" />
             </Principal>
-            <Dependent Role="Seances">
+            <Dependent Role="Seance">
               <PropertyRef Name="ID_Cinema" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="OcineDbModelStoreContainer">
           <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActorsFilms" EntityType="Self.ActorsFilms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cinema" EntityType="Self.Cinema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Films" EntityType="Self.Films" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Genres" EntityType="Self.Genres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FilmsCountries" EntityType="Self.FilmsCountries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GENRES_FILMS" EntityType="Self.GENRES_FILMS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Premiere" EntityType="Self.Premiere" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Seances" EntityType="Self.Seances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seance" EntityType="Self.Seance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ActorsFilms" EntityType="Self.ActorsFilms" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ActorsFilms].[ID_Films] AS [ID_Films], 
-    [ActorsFilms].[ID_Actor] AS [ID_Actor]
-    FROM [dbo].[ActorsFilms] AS [ActorsFilms]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="FilmsCountries" EntityType="Self.FilmsCountries" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [FilmsCountries].[ID_Country] AS [ID_Country], 
-    [FilmsCountries].[ID_film] AS [ID_film]
-    FROM [dbo].[FilmsCountries] AS [FilmsCountries]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="GENRES_FILMS" EntityType="Self.GENRES_FILMS" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [GENRES_FILMS].[ID_film] AS [ID_film], 
-    [GENRES_FILMS].[ID_Genre] AS [ID_Genre]
-    FROM [dbo].[GENRES_FILMS] AS [GENRES_FILMS]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="UserFavorisFilms" EntityType="Self.UserFavorisFilms" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [UserFavorisFilms].[ID_client] AS [ID_client], 
@@ -320,21 +303,21 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
             <End Role="Films" EntitySet="Films" />
             <End Role="FilmsCountries" EntitySet="FilmsCountries" />
           </AssociationSet>
-          <AssociationSet Name="filmsGenres" Association="Self.filmsGenres">
-            <End Role="Genres" EntitySet="Genres" />
-            <End Role="GENRES_FILMS" EntitySet="GENRES_FILMS" />
-          </AssociationSet>
           <AssociationSet Name="FK_ActorsFilms_Films" Association="Self.FK_ActorsFilms_Films">
             <End Role="Films" EntitySet="Films" />
             <End Role="ActorsFilms" EntitySet="ActorsFilms" />
           </AssociationSet>
-          <AssociationSet Name="GenresFilms" Association="Self.GenresFilms">
+          <AssociationSet Name="FK_GENRES_FILMS_Films" Association="Self.FK_GENRES_FILMS_Films">
             <End Role="Films" EntitySet="Films" />
+            <End Role="GENRES_FILMS" EntitySet="GENRES_FILMS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GENRES_FILMS_Genre" Association="Self.FK_GENRES_FILMS_Genre">
+            <End Role="Genre" EntitySet="Genre" />
             <End Role="GENRES_FILMS" EntitySet="GENRES_FILMS" />
           </AssociationSet>
           <AssociationSet Name="InScreening" Association="Self.InScreening">
             <End Role="Films" EntitySet="Films" />
-            <End Role="Seances" EntitySet="Seances" />
+            <End Role="Seance" EntitySet="Seance" />
           </AssociationSet>
           <AssociationSet Name="OwnerOfFavoris" Association="Self.OwnerOfFavoris">
             <End Role="User" EntitySet="User" />
@@ -346,11 +329,10 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           </AssociationSet>
           <AssociationSet Name="SeanceInCimena" Association="Self.SeanceInCimena">
             <End Role="Cinema" EntitySet="Cinema" />
-            <End Role="Seances" EntitySet="Seances" />
+            <End Role="Seance" EntitySet="Seance" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OcineDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -369,11 +351,12 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           <Property Name="ID_Cinema" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CinemaName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="Telephone" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
-          <Property Name="Address" Type="Geography" />
           <Property Name="WebSite" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Raiting" Type="Double" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="Seances" Relationship="Self.SeanceInCimena" FromRole="Cinema" ToRole="Seances" />
+          <NavigationProperty Name="Seance" Relationship="OcineDbModel.SeanceInCimena1" FromRole="Cinema" ToRole="Seance" />
+          <Property Name="Address_Longitude" Type="Double" />
+          <Property Name="Address_Latitude" Type="Double" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -388,29 +371,21 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
             <PropertyRef Name="ID_film" />
           </Key>
           <Property Name="ID_film" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AgePG" Type="Int32" />
           <Property Name="DirectorProduction" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Duration" Type="Time" Precision="0" />
           <Property Name="TraillerUrl" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="Affiche" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="Rating" Type="Double" />
-          <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="HasInScreening" Type="Boolean" />
-          <NavigationProperty Name="Seances" Relationship="Self.InScreening" FromRole="Films" ToRole="Seances" />
           <NavigationProperty Name="Premiere" Relationship="Self.Premiere_Film" FromRole="Films" ToRole="Premiere" />
           <NavigationProperty Name="Actor" Relationship="Self.ActorsFilms" FromRole="Films" ToRole="Actor" />
           <NavigationProperty Name="Country" Relationship="Self.FilmsCountries" FromRole="Films" ToRole="Country" />
-          <NavigationProperty Name="Genres" Relationship="Self.GENRES_FILMS" FromRole="Films" ToRole="Genres" />
           <NavigationProperty Name="User" Relationship="Self.UserFavorisFilms" FromRole="Films" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Genres">
-          <Key>
-            <PropertyRef Name="ID_Genre" />
-          </Key>
-          <Property Name="ID_Genre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Genre" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Films" Relationship="Self.GENRES_FILMS" FromRole="Genres" ToRole="Films" />
+          <NavigationProperty Name="Seance" Relationship="OcineDbModel.InScreening1" FromRole="Films" ToRole="Seance" />
+          <NavigationProperty Name="Genre" Relationship="OcineDbModel.GENRES_FILMS1" FromRole="Films" ToRole="Genre" />
         </EntityType>
         <EntityType Name="Premiere">
           <Key>
@@ -421,19 +396,6 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           <Property Name="CountryPremieres" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
           <Property Name="ID_film" Type="Int32" />
           <NavigationProperty Name="Films" Relationship="Self.Premiere_Film" FromRole="Premiere" ToRole="Films" />
-        </EntityType>
-        <EntityType Name="Seances">
-          <Key>
-            <PropertyRef Name="ID_Seances" />
-          </Key>
-          <Property Name="ID_Seances" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PlayingDate" Type="DateTime" Precision="0" />
-          <Property Name="PlayingTime" Type="Time" Precision="0" />
-          <Property Name="ID_Cinema" Type="Int32" />
-          <Property Name="UrlSeances" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
-          <Property Name="ID_Film" Type="Int32" />
-          <NavigationProperty Name="Cinema" Relationship="Self.SeanceInCimena" FromRole="Seances" ToRole="Cinema" />
-          <NavigationProperty Name="Films" Relationship="Self.InScreening" FromRole="Seances" ToRole="Films" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -448,32 +410,6 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           <Property Name="BirthDay" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Films" Relationship="Self.UserFavorisFilms" FromRole="User" ToRole="Films" />
         </EntityType>
-        <Association Name="SeanceInCimena">
-          <End Role="Cinema" Type="Self.Cinema" Multiplicity="0..1" />
-          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cinema">
-              <PropertyRef Name="ID_Cinema" />
-            </Principal>
-            <Dependent Role="Seances">
-              <PropertyRef Name="ID_Cinema" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="InScreening">
-          <End Role="Films" Type="Self.Films" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Seances" Type="Self.Seances" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Films">
-              <PropertyRef Name="ID_film" />
-            </Principal>
-            <Dependent Role="Seances">
-              <PropertyRef Name="ID_Film" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Premiere_Film">
           <End Role="Films" Type="Self.Films" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -496,10 +432,6 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           <End Role="Country" Type="Self.Country" Multiplicity="*" />
           <End Role="Films" Type="Self.Films" Multiplicity="*" />
         </Association>
-        <Association Name="GENRES_FILMS">
-          <End Role="Genres" Type="Self.Genres" Multiplicity="*" />
-          <End Role="Films" Type="Self.Films" Multiplicity="*" />
-        </Association>
         <Association Name="UserFavorisFilms">
           <End Role="Films" Type="Self.Films" Multiplicity="*" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -509,18 +441,8 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           <EntitySet Name="Cinema" EntityType="Self.Cinema" />
           <EntitySet Name="Country" EntityType="Self.Country" />
           <EntitySet Name="Films" EntityType="Self.Films" />
-          <EntitySet Name="Genres" EntityType="Self.Genres" />
           <EntitySet Name="Premiere" EntityType="Self.Premiere" />
-          <EntitySet Name="Seances" EntityType="Self.Seances" />
           <EntitySet Name="User" EntityType="Self.User" />
-          <AssociationSet Name="SeanceInCimena" Association="Self.SeanceInCimena">
-            <End Role="Cinema" EntitySet="Cinema" />
-            <End Role="Seances" EntitySet="Seances" />
-          </AssociationSet>
-          <AssociationSet Name="InScreening" Association="Self.InScreening">
-            <End Role="Films" EntitySet="Films" />
-            <End Role="Seances" EntitySet="Seances" />
-          </AssociationSet>
           <AssociationSet Name="Premiere_Film" Association="Self.Premiere_Film">
             <End Role="Films" EntitySet="Films" />
             <End Role="Premiere" EntitySet="Premiere" />
@@ -533,15 +455,77 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
             <End Role="Country" EntitySet="Country" />
             <End Role="Films" EntitySet="Films" />
           </AssociationSet>
-          <AssociationSet Name="GENRES_FILMS" Association="Self.GENRES_FILMS">
-            <End Role="Genres" EntitySet="Genres" />
-            <End Role="Films" EntitySet="Films" />
-          </AssociationSet>
           <AssociationSet Name="UserFavorisFilms" Association="Self.UserFavorisFilms">
             <End Role="Films" EntitySet="Films" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <EntitySet Name="Genre" EntityType="OcineDbModel.Genre" />
+          <EntitySet Name="Seance" EntityType="OcineDbModel.Seance" />
+          <AssociationSet Name="SeanceInCimena1" Association="OcineDbModel.SeanceInCimena1">
+            <End Role="Cinema" EntitySet="Cinema" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="InScreening1" Association="OcineDbModel.InScreening1">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="Seance" EntitySet="Seance" />
+          </AssociationSet>
+          <AssociationSet Name="GENRES_FILMS1" Association="OcineDbModel.GENRES_FILMS1">
+            <End Role="Films" EntitySet="Films" />
+            <End Role="Genre" EntitySet="Genre" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="ID_Genre" />
+          </Key>
+          <Property Name="ID_Genre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Films" Relationship="OcineDbModel.GENRES_FILMS1" FromRole="Genre" ToRole="Films" />
+          <Property Name="GenreName" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Seance">
+          <Key>
+            <PropertyRef Name="ID_Seances" />
+          </Key>
+          <Property Name="ID_Seances" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayingDate" Type="DateTime" Precision="0" />
+          <Property Name="PlayingTime" Type="Time" Precision="0" />
+          <Property Name="ID_Cinema" Type="Int32" />
+          <Property Name="UrlSeances" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="ID_Film" Type="Int32" />
+          <Property Name="Has3D" Type="Boolean" />
+          <NavigationProperty Name="Cinema" Relationship="OcineDbModel.SeanceInCimena1" FromRole="Seance" ToRole="Cinema" />
+          <NavigationProperty Name="Films" Relationship="OcineDbModel.InScreening1" FromRole="Seance" ToRole="Films" />
+        </EntityType>
+        <Association Name="SeanceInCimena1">
+          <End Type="OcineDbModel.Cinema" Role="Cinema" Multiplicity="0..1" />
+          <End Type="OcineDbModel.Seance" Role="Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cinema">
+              <PropertyRef Name="ID_Cinema" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="ID_Cinema" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="InScreening1">
+          <End Type="OcineDbModel.Films" Role="Films" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OcineDbModel.Seance" Role="Seance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Films">
+              <PropertyRef Name="ID_film" />
+            </Principal>
+            <Dependent Role="Seance">
+              <PropertyRef Name="ID_Film" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GENRES_FILMS1">
+          <End Type="OcineDbModel.Films" Role="Films" Multiplicity="*" />
+          <End Type="OcineDbModel.Genre" Role="Genre" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -559,10 +543,11 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
           <EntitySetMapping Name="Cinema">
             <EntityTypeMapping TypeName="OcineDbModel.Cinema">
               <MappingFragment StoreEntitySet="Cinema">
+                <ScalarProperty Name="Address_Latitude" ColumnName="Address_Latitude" />
+                <ScalarProperty Name="Address_Longitude" ColumnName="Address_Longitude" />
                 <ScalarProperty Name="ID_Cinema" ColumnName="ID_Cinema" />
                 <ScalarProperty Name="CinemaName" ColumnName="CinemaName" />
                 <ScalarProperty Name="Telephone" ColumnName="Telephone" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="WebSite" ColumnName="WebSite" />
                 <ScalarProperty Name="Raiting" ColumnName="Raiting" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
@@ -593,14 +578,6 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Genres">
-            <EntityTypeMapping TypeName="OcineDbModel.Genres">
-              <MappingFragment StoreEntitySet="Genres">
-                <ScalarProperty Name="ID_Genre" ColumnName="ID_Genre" />
-                <ScalarProperty Name="Genre" ColumnName="Genre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Premiere">
             <EntityTypeMapping TypeName="OcineDbModel.Premiere">
               <MappingFragment StoreEntitySet="Premiere">
@@ -608,18 +585,6 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
                 <ScalarProperty Name="PremiereDate" ColumnName="PremiereDate" />
                 <ScalarProperty Name="CountryPremieres" ColumnName="CountryPremieres" />
                 <ScalarProperty Name="ID_film" ColumnName="ID_film" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Seances">
-            <EntityTypeMapping TypeName="OcineDbModel.Seances">
-              <MappingFragment StoreEntitySet="Seances">
-                <ScalarProperty Name="ID_Seances" ColumnName="ID_Seances" />
-                <ScalarProperty Name="PlayingDate" ColumnName="PlayingDate" />
-                <ScalarProperty Name="PlayingTime" ColumnName="PlayingTime" />
-                <ScalarProperty Name="ID_Cinema" ColumnName="ID_Cinema" />
-                <ScalarProperty Name="UrlSeances" ColumnName="UrlSeances" />
-                <ScalarProperty Name="ID_Film" ColumnName="ID_Film" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -652,20 +617,41 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
               <ScalarProperty Name="ID_film" ColumnName="ID_film" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="GENRES_FILMS" TypeName="OcineDbModel.GENRES_FILMS" StoreEntitySet="GENRES_FILMS">
-            <EndProperty Name="Genres">
-              <ScalarProperty Name="ID_Genre" ColumnName="ID_Genre" />
-            </EndProperty>
-            <EndProperty Name="Films">
-              <ScalarProperty Name="ID_film" ColumnName="ID_film" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="UserFavorisFilms" TypeName="OcineDbModel.UserFavorisFilms" StoreEntitySet="UserFavorisFilms">
             <EndProperty Name="Films">
               <ScalarProperty Name="ID_film" ColumnName="ID_film" />
             </EndProperty>
             <EndProperty Name="User">
               <ScalarProperty Name="ID_client" ColumnName="ID_client" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Genre">
+            <EntityTypeMapping TypeName="OcineDbModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="GenreName" ColumnName="GenreName" />
+                <ScalarProperty Name="ID_Genre" ColumnName="ID_Genre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seance">
+            <EntityTypeMapping TypeName="OcineDbModel.Seance">
+              <MappingFragment StoreEntitySet="Seance">
+                <ScalarProperty Name="Has3D" ColumnName="Has3D" />
+                <ScalarProperty Name="ID_Film" ColumnName="ID_Film" />
+                <ScalarProperty Name="UrlSeances" ColumnName="UrlSeances" />
+                <ScalarProperty Name="ID_Cinema" ColumnName="ID_Cinema" />
+                <ScalarProperty Name="PlayingTime" ColumnName="PlayingTime" />
+                <ScalarProperty Name="PlayingDate" ColumnName="PlayingDate" />
+                <ScalarProperty Name="ID_Seances" ColumnName="ID_Seances" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="GENRES_FILMS1" TypeName="OcineDbModel.GENRES_FILMS1" StoreEntitySet="GENRES_FILMS">
+            <EndProperty Name="Genre">
+              <ScalarProperty Name="ID_Genre" ColumnName="ID_Genre" />
+            </EndProperty>
+            <EndProperty Name="Films">
+              <ScalarProperty Name="ID_film" ColumnName="ID_film" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
@@ -689,6 +675,8 @@ warning 6002: The table/view 'OcineDb.dbo.UserFavorisFilms' does not have a prim
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams></Diagrams>
+    <Diagrams>
+      <Diagram Name="a" ZoomLevel="10"></Diagram>
+    </Diagrams>
   </Designer>
 </edmx:Edmx>

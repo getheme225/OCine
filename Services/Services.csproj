@@ -85,14 +85,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActorServices.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
-    <Compile Include="AutoMapperProfiles\AutoMapperCinemaProfile.cs" />
-    <Compile Include="AutoMapperProfiles\AutoMapperFilmProfile.cs" />
-    <Compile Include="AutoMapperProfiles\AutoMapperSeancesProfile.cs" />
+    <Compile Include="AutoMapperProfiles\AutoMapperProfile.cs" />
     <Compile Include="CinemaServices.cs" />
+    <Compile Include="CountryServices.cs" />
     <Compile Include="FilmsService.cs" />
+    <Compile Include="GenreServices.cs" />
+    <Compile Include="Interfaces\IActorsServices.cs" />
     <Compile Include="Interfaces\ICinemaServices.cs" />
+    <Compile Include="Interfaces\ICountryServices.cs" />
     <Compile Include="Interfaces\IFilmServices.cs" />
+    <Compile Include="Interfaces\IGenreServices.cs" />
+    <Compile Include="Interfaces\IPremiereServices.cs" />
     <Compile Include="Interfaces\ISeanceServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeanceServices.cs" />

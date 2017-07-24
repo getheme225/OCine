@@ -1,43 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using OCine.BAL.DTO;
-using OCineManagerApps.OcineManager.HttpClient.Interface;
+using OCineManagerApps.OcineManager.DATA.Interfaces;
 using PropertyChanged;
 
 namespace OCineManagerApps.OcineManager.ViewModel
 {
     [ImplementPropertyChanged]
-    public class CinemaViewModel
+    public class CinemaViewModel : ViewModelBase
     {
-        private readonly IWebApiConnection _webApi;
+        protected readonly ICinemaRequest CinemaDataHttpProxy;
+        #region RelayCommand
 
-        public CinemaViewModel(IWebApiConnection webApi)
-        {
-            _webApi = webApi;
-            GetCinemaList();
-        }
-        public CinemaDto Cinema { get; set; }
+        public RelayCommand AddCinema { get; private set; }
+        public RelayCommand RefreshCinemaLits { get; private set; }
+
+        #endregion
+
+        #region Public Proprety
+       
         public ObservableCollection<CinemaDto> CinemaList { get; private set; }
+        public CinemaDto  SelectedCinema { get; set; }
+        public string Address { get; set; }
 
-        private async void GetCinemaList()
+        #endregion
+
+       
+
+        public CinemaViewModel(ICinemaRequest cinemaData)
         {
-            try
-            {
-                var result = await _webApi.Client.GetAsync("api/Cinema");
-                result.EnsureSuccessStatusCode();
-                var list = await result.Content.ReadAsAsync<IEnumerable<CinemaDto>>();
-                CinemaList = new ObservableCollection<CinemaDto>(list.ToList());
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
+            #region HttpDataproxy Initiliaze
+            CinemaDataHttpProxy = cinemaData;
+            #endregion
+
+            #region ObservableCollections Initialize 
+            CinemaList = new ObservableCollection<CinemaDto>();
+            Refresh();
+            SelectedCinema = new CinemaDto();
+            #endregion
+
+            #region Command Initialisation
+            RefreshCinemaLits = new RelayCommand(Refresh);      
+            AddCinema = new RelayCommand(()=> new CreateCinema().Show()); 
+                
+            #endregion
         }
+
+      private async void Refresh()
+        {
+            CinemaList = new ObservableCollection<CinemaDto>(await CinemaDataHttpProxy.GetAllItems());
+        }
+
+       
     }
 }
